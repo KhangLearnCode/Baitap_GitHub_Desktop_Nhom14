@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Môn học (CRUD)</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="background-aurora"></div>
+
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <h1>CourseManager</h1>
+            </div>
+            <p class="subtitle">Hệ thống quản lý môn học thông minh</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Khu vực Form -->
+            <section class="glass-panel form-section">
+                <h2 id="form-title">
+                    <i class="fa-solid fa-plus-circle"></i> Thêm Môn Học Mới
+                </h2>
+                <form id="course-form">
+                    <input type="hidden" id="course-id">
+
+                    <div class="form-group">
+                        <label for="course-name">Tên môn học <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-book"></i>
+                            <input type="text" id="course-name" placeholder="VD: Lập trình Web..." required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="course-teacher">Giảng viên (Tuỳ chọn)</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                            <input type="text" id="course-teacher" placeholder="VD: ThS. Nguyễn Văn A">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="course-time">Thời gian học <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-clock"></i>
+                            <input type="text" id="course-time" placeholder="VD: Sáng thứ 2, 7h - 11h" required>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="btn-cancel" class="btn btn-secondary" style="display: none;">
+                            <i class="fa-solid fa-xmark"></i> Hủy sửa
+                        </button>
+                        <button type="submit" id="btn-submit" class="btn btn-primary">
+                            <i class="fa-solid fa-check"></i> Thêm Môn Học
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Khu vực danh sách (Table / Grid) -->
+            <section class="glass-panel list-section">
+                <div class="list-header">
+                    <h2><i class="fa-solid fa-list-ul"></i> Danh sách môn học</h2>
+                    <div class="stats">
+                        Tổng số: <span id="total-courses" class="badge">0</span>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="course-table">
+                        <thead>
+                            <tr>
+                                <th>Môn học</th>
+                                <th>Giảng viên</th>
+                                <th>Thời gian</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="course-list">
+                            <!-- Dữ liệu JS sẽ render ở đây -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="empty-state" class="empty-state">
+                    <img src="https://cdni.iconscout.com/illustration/premium/thumb/folder-is-empty-illustration-download-in-svg-png-gif-file-formats--no-data-record-pack-business-illustrations-3305419.png?f=webp"
+                        alt="No Data">
+                    <p>Chưa có môn học nào. Hãy thêm ở form bên trái!</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
