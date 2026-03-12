@@ -42,21 +42,27 @@ let diff = deadlineDate - today
 let days = Math.ceil(diff/(1000*60*60*24))
 
 let status=""
+let color="black"
 
 if(days < 0){
 status="(Quá hạn)"
+color="red"
 }
 else if(days <=1){
 status="(Sắp tới hạn)"
+color="orange"
 }
 else{
 status="(Còn "+days+" ngày)"
+color="green"
 }
 
 let li = document.createElement("li")
 
 li.innerHTML = `
+<span style="color:${color}">
 <b>${item.task}</b> - ${item.date} ${status}
+</span>
 <button class="deleteBtn" onclick="deleteDeadline(${item.id})">Xóa</button>
 `
 
