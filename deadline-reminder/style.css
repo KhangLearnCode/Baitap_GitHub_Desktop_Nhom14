@@ -1,0 +1,52 @@
+body{
+font-family: Arial;
+background:#f2f2f2;
+text-align:center;
+}
+
+h1{
+color:#333;
+}
+
+.form{
+margin:20px;
+}
+
+input{
+padding:8px;
+margin:5px;
+border-radius:5px;
+border:1px solid #ccc;
+}
+
+button{
+padding:8px 12px;
+background:#4CAF50;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#45a049;
+}
+
+ul{
+list-style:none;
+padding:0;
+}
+
+li{
+background:white;
+margin:10px auto;
+padding:10px;
+width:350px;
+border-radius:5px;
+box-shadow:0 0 5px rgba(0,0,0,0.2);
+}
+
+.deleteBtn{
+background:red;
+margin-left:10px;
+}
