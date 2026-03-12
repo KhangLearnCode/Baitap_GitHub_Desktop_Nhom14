@@ -23,7 +23,7 @@ exports.protect = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Lấy thông tin user từ token
-    req.user = await User.findById(decoded.id);
+    req.user = await User.findByPk(decoded.id);
 
     if (!req.user) {
       return res.status(401).json({

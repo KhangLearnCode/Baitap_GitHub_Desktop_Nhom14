@@ -15,8 +15,8 @@ Hệ thống xác thực người dùng đầy đủ với các tính năng:
 ### Backend:
 - **Node.js** - Runtime environment
 - **Express.js** - Web framework
-- **MongoDB** - Database
-- **Mongoose** - ODM cho MongoDB
+- **MySQL** - Database
+- **Sequelize** - ORM cho MySQL
 - **bcryptjs** - Hash mật khẩu
 - **jsonwebtoken** - JWT authentication
 - **dotenv** - Quản lý biến môi trường
@@ -32,7 +32,7 @@ Hệ thống xác thực người dùng đầy đủ với các tính năng:
 Baitap_GitHub_Desktop_Nhom14/
 │
 ├── config/
-│   └── database.js          # Cấu hình kết nối MongoDB
+│   └── database.js          # Cấu hình kết nối MySQL
 │
 ├── controllers/
 │   └── authController.js    # Controller xử lý đăng ký/đăng nhập
@@ -66,19 +66,34 @@ Baitap_GitHub_Desktop_Nhom14/
 
 ### 1. Yêu cầu hệ thống:
 - Node.js (v14 trở lên)
-- MongoDB (Community hoặc Atlas)
+- MySQL (v5.7 trở lên hoặc v8.0+)
 - npm hoặc yarn
 
-### 2. Cài đặt MongoDB:
+### 2. Cài đặt MySQL:
 
 **Windows:**
-- Download MongoDB Community Server từ: https://www.mongodb.com/try/download/community
-- Cài đặt và chạy MongoDB service
+- Download MySQL Community Server từ: https://dev.mysql.com/downloads/mysql/
+- Hoặc cài đặt XAMPP/WAMP để có giao diện quản lý: https://www.apachefriends.org/
+- Tạo database mới tên `auth_db`:
+  ```sql
+  CREATE DATABASE auth_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+  ```
 
-**Hoặc sử dụng MongoDB Atlas (Cloud):**
-- Đăng ký tài khoản tại: https://www.mongodb.com/cloud/atlas
-- Tạo cluster miễn phí
-- Lấy connection string
+**macOS:**
+```bash
+brew install mysql
+brew services start mysql
+mysql -u root -p
+CREATE DATABASE auth_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+**Linux:**
+```bash
+sudo apt-get install mysql-server
+sudo systemctl start mysql
+mysql -u root -p
+CREATE DATABASE auth_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
 
 ### 3. Clone repository:
 
@@ -92,15 +107,18 @@ cd Baitap_GitHub_Desktop_Nhom14
 ```bash
 npm install
 ```
+MySQL Configuration
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=auth_db
+DB_USER=root
+DB_PASSWORD=your_mysql_password
 
-### 5. Cấu hình biến môi trường:
-
-Tạo file `.env` từ file `.env.example`:
-
-```bash
-copy .env.example .env
+JWT_SECRET=your_super_secret_jwt_key_change_this
+JWT_EXPIRE=7d
 ```
 
+**Lưu ý:** Thay đổi `DB_PASSWORD` thành mật khẩu MySQL của bạn.
 Chỉnh sửa file `.env` với thông tin của bạn:
 
 ```env

@@ -1,62 +1,112 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
 const bcrypt = require('bcryptjs');
+const { sequelize } = require('../config/database');
 
-const userSchema = new mongoose.Schema({
+const User = sequelize.define('User', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   username: {
-    type: String,
-    required: [true, 'Vui lòng nhập tên người dùng'],
-    unique: true,
-    trim: true,
-    minlength: [3, 'Tên người dùng phải có ít nhất 3 ký tự']
+    type: DataTypes.STRING(50),
+    allowNull: false,
+    unique: {
+      msg: 'Tên người dùng đã tồn tại'
+    },
+    validate: {
+      notEmpty: {
+        msg: 'Vui lòng nhập tên người dùng'
+      },
+      len: {
+        args: [3, 50],
+        msg: 'Tên người dùng phải có ít nhất 3 ký tự'
+      }
+    }
   },
   email: {
-    type: String,
-    required: [true, 'Vui lòng nhập email'],
-    unique: true,
-    lowercase: true,
-    trim: true,
-    match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Email không hợp lệ']
+    type: DataTypes.STRING(100),
+    allowNull: false,
+    unique: {
+      msg: 'Email đã tồn tại'
+    },
+    validate: {
+      notEmpty: {
+        msg: 'Vui lòng nhập email'
+      },
+      isEmail: {
+        msg: 'Email không hợp lệ'
+      }
+    },
+    set(value) {
+      this.setDataValue('email', value.toLowerCase().trim());
+    }
   },
   password: {
-    type: String,
-    required: [true, 'Vui lòng nhập mật khẩu'],
-    minlength: [6, 'Mật khẩu phải có ít nhất 6 ký tự'],
-    select: false // Không trả về password khi query
+    type: DataTypes.STRING(255),
+    allowNull: false,
+    validate: {
+      notEmpty: {
+        msg: 'Vui lòng nhập mật khẩu'
+      },
+      len: {
+        args: [6, 255],
+        msg: 'Mật khẩu phải có ít nhất 6 ký tự'
+      }
+    }
   },
   role: {
-    type: String,
-    enum: ['user', 'admin'],
-    default: 'user'
+    type: DataTypes.ENUM('user', 'admin'),
+    defaultValue: 'user',
+    allowNull: false
   },
   createdAt: {
-    type: Date,
-    default: Date.now
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
   }
-});
-
-// Hash mật khẩu trước khi lưu
-userSchema.pre('save', async function(next) {
-  // Chỉ hash nếu password được thay đổi
-  if (!this.isModified('password')) {
-    return next();
+}, {
+  tableName: 'users',
+  timestamps: true,
+  hooks: {
+    // Hash mật khẩu trước khi tạo user mới
+    beforeCreate: async (user) => {
+      if (user.password) {
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password, salt);
+      }
+    },
+    // Hash mật khẩu trước khi update nếu password thay đổi
+    beforeUpdate: async (user) => {
+      if (user.changed('password')) {
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password, salt);
+      }
+    }
+  },
+  defaultScope: {
+    attributes: { exclude: ['password'] }
+  },
+  scopes: {
+    withPassword: {
+      attributes: { include: ['password'] }
+    }
   }
-  
-  // Hash mật khẩu với cost factor 10
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
 });
 
 // So sánh mật khẩu
-userSchema.methods.comparePassword = async function(candidatePassword) {
+User.prototype.comparePassword = async function(candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
 // Phương thức để lấy thông tin user không có password
-userSchema.methods.toJSON = function() {
-  const user = this.toObject();
-  delete user.password;
-  return user;
+User.prototype.toJSON = function() {
+  const values = { ...this.get() };
+  delete values.password;
+  return values;
 };
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = User;

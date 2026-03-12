@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { Op } = require('sequelize');
 
 // Tạo JWT Token
 const generateToken = (id) => {
@@ -16,7 +17,11 @@ exports.register = async (req, res) => {
     const { username, email, password, role } = req.body;
 
     // Kiểm tra xem user đã tồn tại chưa
-    const userExists = await User.findOne({ $or: [{ email }, { username }] });
+    const userExists = await User.findOne({ 
+      where: {
+        [Op.or]: [{ email }, { username }]
+      }
+    });
     
     if (userExists) {
       return res.status(400).json({
@@ -34,14 +39,14 @@ exports.register = async (req, res) => {
     });
 
     // Tạo token
-    const token = generateToken(user._id);
+    const token = generateToken(user.id);
 
     res.status(201).json({
       success: true,
       message: 'Đăng ký thành công',
       token,
       user: {
-        id: user._id,
+        id: user.id,
         username: user.username,
         email: user.email,
         role: user.role
@@ -73,7 +78,9 @@ exports.login = async (req, res) => {
     }
 
     // Tìm user và include password
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.scope('withPassword').findOne({ 
+      where: { email }
+    });
 
     if (!user) {
       return res.status(401).json({
@@ -93,14 +100,14 @@ exports.login = async (req, res) => {
     }
 
     // Tạo token
-    const token = generateToken(user._id);
+    const token = generateToken(user.id);
 
     res.status(200).json({
       success: true,
       message: 'Đăng nhập thành công',
       token,
       user: {
-        id: user._id,
+        id: user.id,
         username: user.username,
         email: user.email,
         role: user.role
@@ -121,12 +128,12 @@ exports.login = async (req, res) => {
 // @access  Private
 exports.getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
+    const user = await User.findByPk(req.user.id);
 
     res.status(200).json({
       success: true,
       user: {
-        id: user._id,
+        id: user.id,
         username: user.username,
         email: user.email,
         role: user.role,
