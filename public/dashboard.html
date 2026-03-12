@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Hệ thống xác thực</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <h1>Dashboard</h1>
+      <button id="logoutBtn" class="btn-secondary">Đăng xuất</button>
+    </header>
+
+    <div class="dashboard-content">
+      <div class="user-info-card">
+        <h2>Thông tin người dùng</h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <strong>ID:</strong>
+            <span id="userId">-</span>
+          </div>
+          <div class="info-item">
+            <strong>Tên người dùng:</strong>
+            <span id="username">-</span>
+          </div>
+          <div class="info-item">
+            <strong>Email:</strong>
+            <span id="email">-</span>
+          </div>
+          <div class="info-item">
+            <strong>Vai trò:</strong>
+            <span id="role" class="role-badge">-</span>
+          </div>
+          <div class="info-item">
+            <strong>Ngày tạo:</strong>
+            <span id="createdAt">-</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="permissions-card">
+        <h2>Quyền truy cập</h2>
+        <div id="permissionsContent">
+          <p>Đang tải...</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="message" id="dashboardMessage"></div>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

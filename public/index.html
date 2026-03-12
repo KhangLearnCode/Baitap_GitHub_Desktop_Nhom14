@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hệ thống Đăng nhập / Đăng ký</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="auth-box">
+      <div class="auth-tabs">
+        <button class="tab-btn active" id="loginTab">Đăng nhập</button>
+        <button class="tab-btn" id="registerTab">Đăng ký</button>
+      </div>
+
+      <!-- Login Form -->
+      <div class="form-container" id="loginForm">
+        <h2>Đăng nhập</h2>
+        <form id="loginFormElement">
+          <div class="form-group">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" required>
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Mật khẩu</label>
+            <input type="password" id="loginPassword" required>
+          </div>
+          <button type="submit" class="btn-primary">Đăng nhập</button>
+        </form>
+        <div class="message" id="loginMessage"></div>
+      </div>
+
+      <!-- Register Form -->
+      <div class="form-container hidden" id="registerForm">
+        <h2>Đăng ký tài khoản</h2>
+        <form id="registerFormElement">
+          <div class="form-group">
+            <label for="registerUsername">Tên người dùng</label>
+            <input type="text" id="registerUsername" required minlength="3">
+          </div>
+          <div class="form-group">
+            <label for="registerEmail">Email</label>
+            <input type="email" id="registerEmail" required>
+          </div>
+          <div class="form-group">
+            <label for="registerPassword">Mật khẩu</label>
+            <input type="password" id="registerPassword" required minlength="6">
+          </div>
+          <div class="form-group">
+            <label for="registerConfirmPassword">Xác nhận mật khẩu</label>
+            <input type="password" id="registerConfirmPassword" required minlength="6">
+          </div>
+          <div class="form-group">
+            <label for="registerRole">Vai trò</label>
+            <select id="registerRole">
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-primary">Đăng ký</button>
+        </form>
+        <div class="message" id="registerMessage"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>
